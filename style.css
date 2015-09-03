@@ -7,6 +7,6 @@ ul{list-style: none;}
 .adList a, .adList img{display: block;}
 .adList{width: 1000px;height: 270px}
 .adItem{position: absolute;top: 0px;left: 100px;}
-.btn{position: absolute;width: 100px;height: 270px;top: 0;z-index: 10;}
+.btn{position: absolute;width: 100px;height: 270px;top: 0;z-index: 10;cursor: pointer;}
 .btnPrev{background: url("images/prev.png") center center no-repeat;left: 0;}
 .btnNext{background: url("images/next.png") center center no-repeat;right: 0;}
