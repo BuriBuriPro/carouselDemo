@@ -1,4 +1,5 @@
 ;(function($){
+	// "use strict";
 	//Create a Class
 	function Carousel(ad){
 		// alert(ads);
@@ -13,6 +14,8 @@
 		//save firstItem and lastItem
 		this.firstItem = this.adItems.first();
 		this.lastItem = this.adItems.last();
+		//set a flag 
+		this.carouselFlag = true;
 		// default parameters
 		this.setting = {
 			"width" : 1000,
@@ -21,13 +24,15 @@
 			"firstHeight" : 270,
 			"verticalAlign" : "middle",
 			"scale" : 0.9,
-			"speed" : 1000
+			"speed" : 1000,
+			"autoplay" : true
 		};		
 		$.extend(this.setting, this.getCustomizedPara());
 		this.setPara();
 		this.setItemsPos();
 		this.btnPrev.click(function(){__this__.carouselRotate("right");});
 		this.btnNext.click(function(){__this__.carouselRotate("left");});
+		// this.setAutoplay();
 		// console.log(this.setItemsPos);
 	}
 	//write the prototype
@@ -120,11 +125,13 @@
 		},
 		//rotation, left means next, right means previous
 		carouselRotate : function(dir){
-			var __this__ = this,
-				zIndexArray = [];
-			if(dir === "left"){
-				this.adItems.each(function(){
-					var self = $(this),
+			if(this.carouselFlag){
+				var __this__ = this,
+					zIndexArray = [];
+				this.carouselFlag = false;
+				if(dir === "left"){
+					this.adItems.each(function(){
+						var self = $(this),
 						prev = self.prev().get(0)? self.prev(): __this__.lastItem,
 						width = prev.width(),
 						height = prev.height(),
@@ -132,21 +139,23 @@
 						opacity = prev.css("opacity"),
 						left = prev.css("left"),
 						top = prev.css("top");
-					zIndexArray.push(zIndex);
-					self.animate({
-						width : width,
-						height : height,
-						opacity : opacity,
-						left : left,
-						top : top
-					}, __this__.setting.speed);					
-				});
-				this.adItems.each(function(i){
-					$(this).css("zIndex", zIndexArray[i]);
-				});
-			}else if(dir === "right"){
-				this.adItems.each(function(){
-					var self = $(this),
+						zIndexArray.push(zIndex);
+						self.animate({
+							width : width,
+							height : height,
+							opacity : opacity,
+							left : left,
+							top : top
+						}, __this__.setting.speed, function(){
+							__this__.carouselFlag = true;
+						});					
+					});
+					this.adItems.each(function(i){
+						$(this).css("zIndex", zIndexArray[i]);
+					});
+				}else if(dir === "right"){
+					this.adItems.each(function(){
+						var self = $(this),
 						next = self.next().get(0)? self.next(): __this__.firstItem,
 						width = next.width(),
 						height = next.height(),
@@ -154,21 +163,24 @@
 						opacity = next.css("opacity"),
 						left = next.css("left"),
 						top = next.css("top");
-					zIndexArray.push(zIndex)
-					self.animate({
-						width : width,
-						height : height,
-						opacity : opacity,
-						left : left,
-						top : top
-					}, __this__.setting.speed);
-				});
-				this.adItems.each(function(i){
-					$(this).css("zIndex", zIndexArray[i]);
-				});
+						zIndexArray.push(zIndex)
+						self.animate({
+							width : width,
+							height : height,
+							opacity : opacity,
+							left : left,
+							top : top
+						}, __this__.setting.speed, function(){
+							__this__.carouselFlag = true;
+						});
+					});
+					this.adItems.each(function(i){
+						$(this).css("zIndex", zIndexArray[i]);
+					});
+				}
 			}
 		},
-		setVerticalAlign:function(h){
+		setVerticalAlign : function(h){
 			//set vertical align style
 			var align = this.setting.verticalAlign,
 			    top = (this.setting.height - h) / 2;
@@ -179,7 +191,10 @@
 				default : break;
 			}
 			return top;
-		}
+		},
+		// autoplay : function(){
+			
+		// }
 	}
 	//initiation
 	Carousel.init = function(ads){
