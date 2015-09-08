@@ -19,7 +19,7 @@
 			"height" : 270,
 			"firstWidth" : 540,
 			"firstHeight" : 270,
-			"verticleAlign" : "middle",
+			"verticalAlign" : "middle",
 			"scale" : 0.9,
 			"speed" : 1000
 		};		
@@ -98,7 +98,8 @@
 					height : h,
 					zIndex : level,
 					left : fixOffLeft + (++ i) * gap - w,
-					opacity : 1 / i
+					opacity : 1 / i,
+					top : self.setVerticalAlign(h)
 				});
 			});
 			// var lw = rightSlice.last().width();		
@@ -109,7 +110,8 @@
 					height : h,
 					zIndex : level,
 					left : (i ++) * gap,
-					opacity : 1 / (loop --)
+					opacity : 1 / (loop --),
+					top : self.setVerticalAlign(h)
 				});				
 				w /= scale;
 				h /= scale;
@@ -128,14 +130,15 @@
 						height = prev.height(),
 						zIndex = prev.css("zIndex"),
 						opacity = prev.css("opacity"),
-						left = prev.css("left");
-						//top
+						left = prev.css("left"),
+						top = prev.css("top")
 						self.animate({
 							width : width,
 							height : height,
 							zIndex : zIndex,
 							opacity : opacity,
-							left : left
+							left : left,
+							top : top
 						});
 				});
 			}else if(dir === "right"){
@@ -146,17 +149,30 @@
 						height = next.height(),
 						zIndex = next.css("zIndex"),
 						opacity = next.css("opacity"),
-						left = next.css("left");
-						//top
+						left = next.css("left"),
+						top = next.css("top")
 						self.animate({
 							width : width,
 							height : height,
 							zIndex : zIndex,
 							opacity : opacity,
-							left : left
+							left : left,
+							top : top
 						});
 				});
 			}
+		},
+		setVerticalAlign:function(h){
+			//set vertical align style
+			var align = this.setting.verticalAlign,
+			    top = (this.setting.height - h) / 2;
+			switch(align){
+				case "top" : top = 0; break;
+				case "middle" : break;
+				case "bottom" : top = this.setting.height - h; break;
+				default : break;
+			}
+			return top;
 		}
 	}
 	//initiation
