@@ -25,14 +25,19 @@
 			"verticalAlign" : "middle",
 			"scale" : 0.9,
 			"speed" : 1000,
-			"autoplay" : true
+			"autoplay" : true,
+			"delay" : 2000
 		};		
 		$.extend(this.setting, this.getCustomizedPara());
 		this.setPara();
 		this.setItemsPos();
 		this.btnPrev.click(function(){__this__.carouselRotate("right");});
 		this.btnNext.click(function(){__this__.carouselRotate("left");});
-		// this.setAutoplay();
+		if(this.setting.autoplay){
+			this.autoplay();
+			this.ad.hover(function(){window.clearInterval(__this__.timer);}, 
+				function(){__this__.autoplay();});			
+		}
 		// console.log(this.setItemsPos);
 	}
 	//write the prototype
@@ -192,9 +197,11 @@
 			}
 			return top;
 		},
-		// autoplay : function(){
-			
-		// }
+		autoplay : function(){
+			var __this__ = this;
+			this.timer = window.setInterval(function(){
+				__this__.btnNext.click();}, __this__.setting.delay);
+		}
 	}
 	//initiation
 	Carousel.init = function(ads){
