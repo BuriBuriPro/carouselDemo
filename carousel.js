@@ -3,6 +3,7 @@
 	function Carousel(ad){
 		// alert(ads);
 		//save single node of ad, adList, btnPrev, btnNext
+		var __this__ = this;		
 		this.ad = ad;		
 		this.adList = ad.find("ul.adList")
 		this.btnPrev = ad.find("div.btnPrev");
@@ -25,6 +26,8 @@
 		$.extend(this.setting, this.getCustomizedPara());
 		this.setPara();
 		this.setItemsPos();
+		this.btnPrev.click(function(){__this__.carouselRotate("right");});
+		this.btnNext.click(function(){__this__.carouselRotate("left");});
 		// console.log(this.setItemsPos);
 	}
 	//write the prototype
@@ -84,7 +87,6 @@
 				firstLeft = (this.setting.width - w) / 2,
 				fixOffLeft = firstLeft + w, 
 				gap = firstLeft / level;
-
 			//set right slice
 			rightSlice.each(function(i){
 				level --;
@@ -98,7 +100,7 @@
 					left : fixOffLeft + (++ i) * gap - w,
 					opacity : 1 / i
 				});
-			})
+			});
 			// var lw = rightSlice.last().width();		
 			var loop = leftSlice.size();	
 			leftSlice.each(function(i){
@@ -112,8 +114,49 @@
 				w /= scale;
 				h /= scale;
 				level ++;
-			})
-
+			});
+		},
+		//rotation, left means next, right means previous
+		carouselRotate : function(dir){
+			var __this__ = this,
+				zIndexArray = [];
+			if(dir === "left"){
+				this.adItems.each(function(){
+					var self = $(this),
+						prev = self.prev().get(0)? self.prev(): __this__.lastItem,
+						width = prev.width(),
+						height = prev.height(),
+						zIndex = prev.css("zIndex"),
+						opacity = prev.css("opacity"),
+						left = prev.css("left");
+						//top
+						self.animate({
+							width : width,
+							height : height,
+							zIndex : zIndex,
+							opacity : opacity,
+							left : left
+						});
+				});
+			}else if(dir === "right"){
+				this.adItems.each(function(){
+					var self = $(this),
+						next = self.next().get(0)? self.next(): __this__.firstItem,
+						width = next.width(),
+						height = next.height(),
+						zIndex = next.css("zIndex"),
+						opacity = next.css("opacity"),
+						left = next.css("left");
+						//top
+						self.animate({
+							width : width,
+							height : height,
+							zIndex : zIndex,
+							opacity : opacity,
+							left : left
+						});
+				});
+			}
 		}
 	}
 	//initiation
