@@ -24,7 +24,7 @@
 		}		
 		$.extend(this.setting, this.getCustomizedParameters());
 		this.setParameters();
-		// console.log(this.ad);
+		// console.log(this.adItems.size());
 	}
 	//write the prototype
 	Carousel.prototype = {
@@ -40,17 +40,23 @@
 			});
 			//calculate the width of button
 			var w = (this.setting.width - this.setting.firstWidth) / 2;
+			//calculate  max zIndex 
+			var maxZ = Math.ceil(this.adItems.size() / 2);
 			this.btnPrev.css({
 				width : w,
-				height : this.setting.height
+				height : this.setting.height,
+				zIndex : maxZ
 			});
 			this.btnNext.css({
 				width : w,
-				height : this.setting.height
+				height : this.setting.height,
+				zIndex : maxZ
 			});
 			this.firstItem.css({
 				width : this.setting.firstWidth,
-				height : this.setting.firstHeight
+				height : this.setting.firstHeight,
+				left : w,
+				zIndex : maxZ - 1
 			})
 		},
 		//get customized parameters
