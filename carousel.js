@@ -131,15 +131,18 @@
 						zIndex = prev.css("zIndex"),
 						opacity = prev.css("opacity"),
 						left = prev.css("left"),
-						top = prev.css("top")
-						self.animate({
-							width : width,
-							height : height,
-							zIndex : zIndex,
-							opacity : opacity,
-							left : left,
-							top : top
-						});
+						top = prev.css("top");
+					zIndexArray.push(zIndex);
+					self.animate({
+						width : width,
+						height : height,
+						opacity : opacity,
+						left : left,
+						top : top
+					}, __this__.setting.speed);					
+				});
+				this.adItems.each(function(i){
+					$(this).css("zIndex", zIndexArray[i]);
 				});
 			}else if(dir === "right"){
 				this.adItems.each(function(){
@@ -150,15 +153,18 @@
 						zIndex = next.css("zIndex"),
 						opacity = next.css("opacity"),
 						left = next.css("left"),
-						top = next.css("top")
-						self.animate({
-							width : width,
-							height : height,
-							zIndex : zIndex,
-							opacity : opacity,
-							left : left,
-							top : top
-						});
+						top = next.css("top");
+					zIndexArray.push(zIndex)
+					self.animate({
+						width : width,
+						height : height,
+						opacity : opacity,
+						left : left,
+						top : top
+					}, __this__.setting.speed);
+				});
+				this.adItems.each(function(i){
+					$(this).css("zIndex", zIndexArray[i]);
 				});
 			}
 		},
