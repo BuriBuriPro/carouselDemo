@@ -21,15 +21,25 @@
 			"verticleAlign" : "middle",
 			"scale" : 0.9,
 			"speed" : 1000
-		}		
-		$.extend(this.setting, this.getCustomizedParameters());
-		this.setParameters();
-		// console.log(this.adItems.size());
+		};		
+		$.extend(this.setting, this.getCustomizedPara());
+		this.setPara();
+		this.setItemsPos();
+		// console.log(this.setItemsPos);
 	}
 	//write the prototype
-	Carousel.prototype = {
+	Carousel.prototype = {		
+		//get customized parameters
+		getCustomizedPara : function(){
+			var setting = this.ad.attr("data-setting");
+			if(setting && setting != ""){
+				return $.parseJSON(setting);
+			}else{
+				return {};
+			}
+		},
 		//set parameters
-		setParameters:function(){
+		setPara : function(){
 			this.ad.css({
 				width : this.setting.width,
 				height : this.setting.height
@@ -59,14 +69,51 @@
 				zIndex : maxZ - 1
 			})
 		},
-		//get customized parameters
-		getCustomizedParameters:function(){
-			var setting = this.ad.attr("data-setting");
-			if(setting && setting != ""){
-				return $.parseJSON(setting);
-			}else{
-				return {};
-			}
+		//set items position
+		setItemsPos : function(){			
+			//cache of objects
+			var self = this,
+				sliceItems = this.adItems.slice(1),
+				sliceSize = sliceItems.size() / 2,
+				rightSlice = sliceItems.slice(0, sliceSize),
+				leftSlice = sliceItems.slice(sliceSize),
+				level =Math.floor(this.adItems.size() / 2),
+				scale = this.setting.scale,
+				w = this.setting.firstWidth,
+				h = this.setting.firstHeight,
+				firstLeft = (this.setting.width - w) / 2,
+				fixOffLeft = firstLeft + w, 
+				gap = firstLeft / level;
+
+			//set right slice
+			rightSlice.each(function(i){
+				level --;
+				w *= scale;
+				h *= scale;
+				var j = 1;
+				$(this).css({
+					width : w,
+					height : h,
+					zIndex : level,
+					left : fixOffLeft + (++ i) * gap - w,
+					opacity : 1 / i
+				});
+			})
+			// var lw = rightSlice.last().width();		
+			var loop = leftSlice.size();	
+			leftSlice.each(function(i){
+				$(this).css({
+					width : w,
+					height : h,
+					zIndex : level,
+					left : (i ++) * gap,
+					opacity : 1 / (loop --)
+				});				
+				w /= scale;
+				h /= scale;
+				level ++;
+			})
+
 		}
 	}
 	//initiation
