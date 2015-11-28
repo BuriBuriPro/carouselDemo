@@ -3,7 +3,7 @@
 ul{list-style: none;}
 
 /*carousel stylesheet*/
-.carousel{position: relative;width: 1000px;height: 270px}
+.carousel{position: relative;width: 1000px;height: 270px;margin-top: 20px;}
 .adList a, .adList img{display: block;}
 .adList{width: 1000px;height: 270px}
 .adItem{position: absolute;top: 0px;left: 100px;}
