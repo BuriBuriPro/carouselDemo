@@ -1,7 +1,7 @@
 /*initialization*/
 *{margin: 0;padding: 0;}
 ul{list-style: none;}
-p{line-height: 20px}
+p{line-height: 22px}
 
 /*carousel stylesheet*/
 .carousel{position: relative;width: 1000px;height: 270px;margin-top: 20px;}
