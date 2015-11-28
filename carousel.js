@@ -38,7 +38,6 @@
 			this.ad.hover(function(){window.clearInterval(__this__.timer);}, 
 				function(){__this__.autoplay();});			
 		}
-		// console.log(this.setItemsPos);
 	}
 	//write the prototype
 	Carousel.prototype = {		
